@@ -69,3 +69,20 @@ cfact = lambda n: \
                         (cmult(cs(cleft(p)))(cright(p))))
                 (cpair(c0)(c1)))
 
+Y = lambda f: (lambda x: f(x(x)))(lambda x: f(x(x)))
+
+Z = lambda f: (lambda x: f(lambda z: x(x)(z))) \
+              (lambda x: f(lambda z: x(x)(z)))
+
+omega = lambda x: x(x)
+
+# Omega = omega(omega)
+
+gammafact = lambda f: lambda n: \
+                czero(n)(c1)(cmult(n)(f(cp(n))))
+
+gammafactZ = lambda f: lambda n: \
+                czero(n)(c1)(lambda z: cmult(n)(f(cp(n)))(z))
+
+# cfactfact = Y(gammafact)
+cfactfact = Z(gammafactZ)
