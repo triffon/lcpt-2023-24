@@ -35,6 +35,7 @@ ty((α⇒α)⇒α).
 % M:(α⇒(β⇒γ))
 
 :- op(150, xfx, :).
+:- op(150, xfx, @).
 
 % member(?X, ?L).
 
@@ -58,18 +59,18 @@ deconstruct([Ρ | Ρs], Τ, Ρ ⇒ Σ) :- deconstruct(Ρs, Τ, Σ).
 construct(X, [], X).
 construct(X, [M | Ms], N) :- construct(app(X, M), Ms, N).
 
-_ ⊢ [] : [].
-Γ ⊢ [M | Ms] : [Τ | Τs] :- Γ ⊢ M : Τ, Γ ⊢ Ms : Τs.
+_ @ _ ⊢ [] : [].
+V @ Γ ⊢ [M | Ms] : [Τ | Τs] :- V @ Γ ⊢ M : Τ, V @ Γ ⊢ Ms : Τs.
 
-Γ ⊢ λ(X,N) : Ρ ⇒ Σ  :- [X : Ρ | Γ] ⊢ N : Σ.
-Γ ⊢ N : Τ  :- atom(Τ),
+V @ Γ ⊢ λ(X,N) : Ρ ⇒ Σ  :- not(member(Ρ ⇒ Σ, V)), [Ρ ⇒ Σ | V] @ [X : Ρ | Γ] ⊢ N : Σ.
+V @ Γ ⊢ N : Τ           :- not(member(Τ, V)), atom(Τ),
 % 1. търсим в Γ типова декларация X : Σ, чиито тип Σ завършва на Τ
-              member(X : Σ, Γ),
+                           member(X : Σ, Γ),
 % 2. разглобяваме Σ до Ρ₁ ⇒ Ρ₂ ⇒ ... ⇒ Ρₙ ⇒ Τ
-              deconstruct(Ρs, Τ, Σ),
+                           deconstruct(Ρs, Τ, Σ),
 % 3. за всяко Ρₖ търсим Mₖ
-              Γ ⊢ Ms : Ρs,
+                           [Τ | V] @ Γ ⊢ Ms : Ρs,
 % 4. построяваме апликацията app(...app(app(X,M₁),M₂),...,Mₙ)
-              construct(X, Ms, N).
+                           construct(X, Ms, N).
 
-⊢ M : Τ             :- [] ⊢ M : Τ.
+⊢ M : Τ             :- [] @ [] ⊢ M : Τ.
