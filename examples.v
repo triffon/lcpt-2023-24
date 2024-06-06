@@ -177,3 +177,37 @@ Section PredClassLog.
 
 
 End PredClassLog.
+
+Section WeakSymbols.
+  Definition weak_or (A B : Prop) := ~A -> ~B -> False.
+  Variable A B : Prop.
+  Compute weak_or A B.
+  Infix "~\/" := weak_or (at level 60, right associativity).
+  Hypothesis Stab : forall (A : Prop), ~~A -> A.
+
+  Goal A ~\/ B -> A \/ B.
+    intro u.
+    apply Stab.
+    intro v.
+    apply u.
+    (* Goal ~A *)
+      intro a.
+      apply v.
+      left.
+      apply a.
+    (* Goal ~B *)
+      intro b.
+      apply v.
+      right.
+      apply b.
+   Qed.
+
+   Goal A -> A.
+     intro u.
+     (*
+     apply Stab.
+     intro v.
+     apply v.
+     *)
+     apply u.
+   Qed.
