@@ -115,6 +115,8 @@ Section PropClassLog.
     apply v.
     apply w.
   Qed.
+
+  Print Peirce.
 End PropClassLog.
 
 Section PredMinLog.
@@ -129,9 +131,49 @@ Section PredMinLog.
   *)
 
   Goal (forall x, p x) -> exists x, p x.
-  intro u.
-  exists y.
-  apply u.
+    intro u.
+    exists y.
+    apply u.
+    Show Proof.
+  Qed.
+
+  Goal (exists x, ~p x) -> ~ forall x, p x.
+    intro u.
+    intro v.
+    elim u.
+    intros z w.
+    apply w.
+    apply v.
+    Show Proof.
   Qed.
 
 End PredMinLog.
+
+Section PredClassLog.
+  Variable bar : Set.
+  Variable drunkard : bar.
+  Variable drinks : bar -> Prop.
+  Hypothesis Stab : forall (A : Prop), ~~A -> A.
+
+  Theorem drinkers_theorem :
+    exists x, drinks x -> forall y, drinks y.
+    apply Stab.
+    intro not_drinkers_theorem.
+    apply not_drinkers_theorem.
+    exists drunkard.
+    intro drinks_drunkard.
+    intro guy.
+    apply Stab.
+    intro not_drinks_guy.
+    apply not_drinkers_theorem.
+    exists guy.
+    intro drinks_guy.
+    exfalso.
+    apply not_drinks_guy.
+    apply drinks_guy.
+    Show Proof.
+  Qed.
+
+
+
+End PredClassLog.
