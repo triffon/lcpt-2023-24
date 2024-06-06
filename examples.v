@@ -87,3 +87,51 @@ Section PropMinLog.
 
   Print demorgan.
 End PropMinLog.
+
+Section PropClassLog.
+  Hypothesis Stab : forall (A : Prop), ~~A -> A.
+
+  Variable A : Prop.
+  Lemma LEM : A \/ ~A.
+    apply Stab.
+    intro u.
+    apply u.
+    right.
+    intro v.
+    apply u.
+    left.
+    apply v.
+  Qed.
+
+  Variable B : Prop.
+  Lemma Peirce : ((A -> B) -> A) -> A.
+    intro u.
+    apply Stab.
+    intro v.
+    apply v.
+    apply u.
+    intro w.
+    exfalso.
+    apply v.
+    apply w.
+  Qed.
+End PropClassLog.
+
+Section PredMinLog.
+  
+  Variable alpha : Set.
+  Variable p : alpha -> Prop.
+  Variable x y : alpha.
+
+  (*
+  Variable p : nat -> Prop.
+  Variable x y : nat.
+  *)
+
+  Goal (forall x, p x) -> exists x, p x.
+  intro u.
+  exists y.
+  apply u.
+  Qed.
+
+End PredMinLog.
