@@ -86,23 +86,6 @@ Section PropMinLog.
   Qed.
 
   Print demorgan.
-
-  Goal A -> ~~A.
-    intro u.
-    intro v.
-    apply v.
-    apply u.
-    Show Proof.
-  Qed.
-
-  Goal ~~~A -> ~A.
-    intros u v.
-    apply u.
-    intro w.
-    apply w.
-    apply v.
-    Show Proof.
-  Qed.
 End PropMinLog.
 
 Section PropClassLog.
@@ -228,4 +211,6 @@ Section WeakSymbols.
      *)
      apply u.
    Qed.
-End WeakSymbols.
+
+
+                                 
